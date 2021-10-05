@@ -36,8 +36,9 @@ CREATE TABLE "CLIENT" (
     "CLIENTID" INT, 
     "NAME" NVARCHAR(100) NOT NULL, 
     "PHONE" NVARCHAR(15) NOT NULL UNIQUE,
-PRIMARY KEY (CLIENTID),
-);
+    "ORGID" NVARCHAR(4) NOT NULL,
+PRIMARY KEY (CLIENTID)
+)
 
 CREATE TABLE "MENUITEM" (
     "ITEMID" INT, 
@@ -64,3 +65,44 @@ PRIMARY KEY (CLIENTID, DATETIMEPLACED, ITEMID),
 FOREIGN KEY (CLIENTID, DATETIMEPLACED) REFERENCES "ORDER"(CLIENTID, DATETIMEPLACED),
 FOREIGN KEY (ITEMID) REFERENCES MENUITEM,
 CONSTRAINT QTY_LEGNTH CHECK( LEN(QTY)>0))
+
+INSERT INTO ORGANISATION("ORGID", "ORGANISATIONNAME") VALUES
+('DODG',	'Dod & Gy Widget Importers'),
+('SWUT',	'Swinburne University of Technology');
+
+INSERT INTO CLIENT (CLIENTID, NAME, PHONE, ORGID) VALUES
+(12,	'James Hallinan',	'(03)5555-1234',	'SWUT'),
+(15,	'Any Nguyen',	'(03)5555-2345',	'DODG'),
+(18,	'Karen Mok',	'(03)5555-3456',	'SWUT'),
+(21,	'Tim Baird',	'(03)5555-4567',	'DODG'),
+(39, 'Xander Rouse', '(61)0284-9584', 'SWUT');
+
+INSERT INTO MENUITEM (ITEMID, DESCRIPTION, SERVESPERUNIT, UNITPRICE) VALUES
+(3214,	'Tropical Pizza - Large',	2,	 $16.00), 
+(3216,	'Tropical Pizza - Small',	1,	 $12.00 ),
+(3218,	'Tropical Pizza - Family',	4,	 $23.00 ),
+(4325,	'Can - Coke Zero',	1,	 $2.50 ),
+(4326,	'Can - Lemonade',	1,	 $2.50 ),
+(4327,	'Can - Harden Up',	1,	 $7.50 );
+
+INSERT INTO "ORDER" (CLIENTID, DATETIMEPLACED, DELIVERYADDRESS) VALUES
+(12,	'09/20/2021',	'Room TB225 - SUT - 1 John Street, Hawthorn, 3122'),
+(21,	'09/14/2021',	'Room ATC009 - SUT - 1 John Street, Hawthorn, 3122'),
+(21,	'09/27/2021',	'Room TB225 - SUT - 1 John Street, Hawthorn, 3122'),
+(15,	'09/20/2021',	'The George - 1 John Street, Hawthorn, 3122'),
+(18	,   '09/30/2021',	'Room TB225 - SUT - 1 John Street, Hawthorn, 3122');
+
+INSERT INTO ORDERLINE (ITEMID, CLIENTID, DATETIMEPLACED, QTY) VALUES
+(3216,	12,	'09/20/21',	2),
+(4326,	12,	'09/20/21',	1),
+(3218,	21,	'09/14/21',	1),
+(3214,	21,	'09/14/21',	1),
+(4325,	21,	'09/14/21',	4),
+(4327,	21,	'09/14/21',	2),
+(3216,	21,	'09/27/21',	1),
+(4327,	21,	'09/27/21',	1),
+(3218,	21,	'09/27/21',	2),
+(3216,	15,	'09/20/21',	2),
+(4326,	15,	'09/20/21',	1),
+(3216,	18,	'09/30/21',	1),
+(4327,	18,	'09/30/21',	1);
